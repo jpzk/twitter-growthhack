@@ -1,0 +1,9 @@
+# Twitter Growthhack 
+
+Some algorithms for growth hacking with the Twitter API and Python
+
+change config and copy to /var/growthhack  on host system
+database will be placed in /var/gowthhack on host system
+
+# docker build -t growthhack .
+# docker run -i --name growthhackc -v /var/growthhack/:/var/growthhack -t growthhack
