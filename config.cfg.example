@@ -1,0 +1,26 @@
+[twitter]
+consumer_key = 
+consumer_secret = 
+access_token_key = 
+access_token_secret = 
+
+[db] 
+file = growthhack.db
+
+[influxdb]
+host = 
+port = 8086
+user = root
+password = root
+database = twitter
+followers = followers
+following = following
+follows = follows
+not_followed_back = not_followed_back,
+fetched_tweets = fetched_tweets
+
+[algorithm]
+topics = linux,scala,raspberrypi,spark
+new_per_topic = 5
+wait_for_follow = 11000 
+
