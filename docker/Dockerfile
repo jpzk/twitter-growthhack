@@ -10,19 +10,9 @@ RUN apt-get install -y -f git wget unzip
 RUN pip install pysqlite TwitterAPI influxdb
 RUN pip install --upgrade requests
 
-RUN mkdir /root/.ssh/
-
-# Copy over private key, and set permissions
-ADD id_rsa /root/.ssh/id_rsa
-
-# Create known_hosts
-RUN touch /root/.ssh/known_hosts
-# Add bitbuckets key
-RUN ssh-keyscan bitbucket.org >> /root/.ssh/known_hosts
-
 WORKDIR /
-RUN git clone git@bitbucket.org:jpzk/growthhack.git
-WORKDIR /growthhack
+RUN git clone https://github.com/jpzk/twitter-growthhack.git 
+WORKDIR /growtthhack
 RUN mv docker/start.sh /
 RUN chmod +x /start.sh
 
