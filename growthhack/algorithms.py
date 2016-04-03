@@ -84,7 +84,7 @@ class FollowBackAlgorithm(object):
     influx.write_not_followed_back(len(no_back_follow))
 
     # Delete followed before
-    before = str(int(time()) - interval)
+    before = str(int(time()) - self.wait_for_follow)
     followed = self.db.get_followed(before)
     for user in followed: 
       db.delete_follow_user(user)
