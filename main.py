@@ -18,6 +18,7 @@ def my_is_feasible(user):
   return ((user['followers_count'] < 500) and \
   (user['lang'] == "en" or user['lang'] == "de"))
 
+logfile = config.get('logging','filename')
 twitter_options = {
       'consumer_key': config.get('twitter','consumer_key'),
       'consumer_secret':config.get('twitter','consumer_secret'),
@@ -52,7 +53,7 @@ algorithm_options = {
 db = Database(db_options)
 twitter = TwitterClient(twitter_options)
 influx = InfluxWriter(influx_options)
-basicConfig(level=INFO)
+basicConfig(filename=logfile, level=INFO)
 
 def main():
   alg = FollowBackAlgorithm(db, twitter, influx,

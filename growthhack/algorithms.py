@@ -4,6 +4,46 @@
 from logging import getLogger 
 from time import sleep, time
 
+class TwitterAlgorithm(object):
+  """All algorithms for twitter extend from this class"""
+
+  def __init__(self, db, twitter, influx, options):
+    self.l = getLogger(self.__class__.__name__)
+    self.db = db 
+    self.twitter = twitter
+    self.influx = influx
+
+    # reads the options in the sub classes
+    self._read_options(options)
+
+  def _read_options(self, options):
+    """Reads in the options for the specific algorithm"""
+    pass
+
+  def run_once(self):
+    """Runs the algorithm once, useful for sequential execution"""
+    pass
+
+  def run(self):
+    """Run in a loop"""
+    pass
+
+class UnfollowAllNotFollowers(TwitterAlgorithm):
+  def __init__(self, db, twitter, influx, options):
+    self.l = getLogger("UnfollowAllNotFollowers")
+  
+  def _read_options(self, options):
+    """Reads in the options for the specific algorithm"""
+    pass
+
+  def run_once(self):
+    """Runs the algorithm once, useful for sequential execution"""
+    pass
+
+  def run(self):
+    """Run in a loop"""
+    pass
+
 class FollowBackAlgorithm(object):
   """FollowBackAlgorithm: Follows users from certain 
      topics, and waits for them to follow back. If they 
