@@ -26,14 +26,14 @@ class TwitterClient(object):
         following.append(id)
     return following
 
-  def follow_user(self, user):
-    r = self.api.request('friendships/create', {'user_id': user['id_str']})
+  def follow_user(self, user_id):
+    r = self.api.request('friendships/create', {'user_id': user_id })
     if r.status_code == 200:
       status = r.json()
       print 'followed %s' % status['screen_name']
   
-  def unfollow_user(self, user):
-    r = self.api.request('friendships/destroy', {'user_id': user['id_str']})
+  def unfollow_user(self, user_id):
+    r = self.api.request('friendships/destroy', {'user_id': user_id})
     if r.status_code == 200:
       status = r.json()
       print 'unfollowed %s' % status['screen_name']

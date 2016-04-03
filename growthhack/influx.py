@@ -15,6 +15,7 @@ class InfluxWriter(object):
     self.user = options['user']
     self.password = options['password']
     self.database = options['database']
+    self.config = options['config']
 
     def table(t): return options['tables'][t]
     self.followers = table('followers')
@@ -31,7 +32,10 @@ class InfluxWriter(object):
   def _createPoint(self, name, value):
     return [{
       "measurement": name,
-      "tags":{},
+      "tags":{
+          'config_name': self.config['name'],
+          'config_version': self.config['version']
+        },
       "fields": {"value": value}}]
 
   def _write_count(self, name, count):

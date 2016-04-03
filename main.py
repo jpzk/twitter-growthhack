@@ -18,6 +18,11 @@ def my_is_feasible(user):
   return ((user['followers_count'] < 500) and \
   (user['lang'] == "en" or user['lang'] == "de"))
 
+# Configuration version
+configname = config.get('config','name')
+version = config.get('config','version')
+configoptions = {'name': configname, 'version': version}
+
 logfile = config.get('logging','filename')
 twitter_options = {
       'consumer_key': config.get('twitter','consumer_key'),
@@ -33,6 +38,7 @@ influx_options = {
       'user': config.get('influxdb', 'user'),
       'password': config.get('influxdb', 'password'),
       'database': config.get('influxdb', 'database'),
+      'config': configoptions, 
       'tables' : {
         'followers': config.get('influxdb', 'followers'),
         'following': config.get('influxdb', 'following'),
@@ -45,6 +51,7 @@ influx_options = {
 topics = config.get('algorithm','topics').split(',')
 algorithm_options = {
   'topics': topics,
+  'config': configoptions,
   'new_per_topic': int(config.get('algorithm','new_per_topic')),
   'wait_for_follow': int(config.get('algorithm','wait_for_follow')),
   'is_feasible':  my_is_feasible

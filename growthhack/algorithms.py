@@ -38,7 +38,8 @@ class UnfollowAllNotFollowers(TwitterAlgorithm):
 
   def run_once(self):
     """Runs the algorithm once, useful for sequential execution"""
-    pass
+    followers = self.twitter.get_followers()
+    following = twitter.get_following()
 
   def run(self):
     """Run in a loop"""
@@ -102,16 +103,17 @@ class FollowBackAlgorithm(object):
       cs = twitter.get_users_for_topic(topic)
       influx.write_fetched_tweets(len(cs))
 
-      cs = filter(db.is_not_followed, cs)
-      cs = filter(db.is_not_blacklisted, cs)
+      def uid(c,f): return f(c['id_str'])
+      cs = filter(lambda x : uid(x, db.is_not_followed), cs)
+      cs = filter(lambda x : uid(x, db.is_not_blacklisted), cs)
       cs = filter(self.is_feasible, cs)[:self.new_per_topic]
 
       m = "%i new feasible candidates"
       l.info(m % len(cs))
 
       for candidate in cs:
-        twitter.follow_user(candidate)
-        db.insert_follow_user(candidate)
+        twitter.follow_user(candidate['id_str'])
+        db.insert_follow_user(candidate['id_str'])
         m = "follow user %s wait for follow back"
         l.info(m % candidate['screen_name'])
       influx.write_follows(len(cs))
@@ -129,14 +131,14 @@ class FollowBackAlgorithm(object):
     for user in followed: 
       db.delete_follow_user(user)
 
-    for user in no_back_follow:
-      twitter.unfollow_user({'id_str':user})
+    for user_id in no_back_follow:
+      twitter.unfollow_user(user_id)
       m = "Unfollow user %s because no back follow"
-      l.info(m % user)
-      db.delete_follow_user(user)
-      db.insert_blacklist(user)
+      l.info(m % user_id)
+      db.delete_follow_user(user_id)
+      db.insert_blacklist(user_id)
       m = "Putting user %s into blacklist" 
-      l.info(m % user)    
+      l.info(m % user_id)    
   
   def run(self):
     while(True):

@@ -44,37 +44,37 @@ class Database(object):
     c.execute(INSERT_BLACKLIST % user)
     conn.commit()
 
-  def is_not_blacklisted(self, user):
+  def is_not_blacklisted(self, user_id):
     """Select is user is already followed"""
     conn = self.conn
     c = conn.cursor()
     result = []
-    for r in c.execute(IS_BLACKLISTED % user['id_str']):
+    for r in c.execute(IS_BLACKLISTED % user_id):
       result.append(r)
     return len(result) < 1
 
-  def insert_follow_user(self, user):
+  def insert_follow_user(self, user_id):
     """Insert a record for following a user"""
     conn = self.conn
     c = conn.cursor()
     t = str(int(time()))
-    data = (t, user['id_str'])
+    data = (t, user_id)
     c.execute(INSERT_FOLLOWER % data)
     conn.commit()
 
-  def delete_follow_user(self, user):
+  def delete_follow_user(self, user_id):
     """Delete a record for following a user"""
     conn = self.conn
     c = conn.cursor()
-    c.execute(DELETE_FOLLOWER % user)
+    c.execute(DELETE_FOLLOWER % user_id)
     conn.commit()
 
-  def is_not_followed(self, user):
+  def is_not_followed(self, user_id):
     """Select is user is already followed"""
     conn = self.conn
     c = conn.cursor()
     result = []
-    for r in c.execute(IS_FOLLOWED % user['id_str']):
+    for r in c.execute(IS_FOLLOWED % user_id):
       result.append(r)
     return len(result) < 1
 
