@@ -12,7 +12,7 @@ RUN pip install --upgrade requests
 
 WORKDIR /
 RUN git clone https://github.com/jpzk/twitter-growthhack.git 
-WORKDIR /growtthhack
+WORKDIR /twitter-growthhack
 RUN mv docker/start.sh /
 RUN chmod +x /start.sh
 
