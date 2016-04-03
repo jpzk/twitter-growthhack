@@ -3,11 +3,12 @@
 
 from growthhack.database import Database
 from growthhack.twitter import TwitterClient
-from growthhack.algorithms import FollowBackAlgorithm
+from growthhack.algorithms import * 
 from growthhack.influx import InfluxWriter
 
 from sys import argv
 from logging import basicConfig, INFO
+from time import sleep
 import ConfigParser
 
 config = ConfigParser.ConfigParser()
@@ -41,6 +42,7 @@ influx_options = {
       'config': configoptions, 
       'tables' : {
         'followers': config.get('influxdb', 'followers'),
+        'unfollowing': config.get('influxdb', 'unfollowing'),
         'following': config.get('influxdb', 'following'),
         'follows': config.get('influxdb', 'follows'),
         'not_followed_back': config.get('influxdb', 'not_followed_back'),
@@ -63,9 +65,14 @@ influx = InfluxWriter(influx_options)
 basicConfig(filename=logfile, level=INFO)
 
 def main():
-  alg = FollowBackAlgorithm(db, twitter, influx,
+  fba = FollowBackAlgorithm(db, twitter, influx,
       algorithm_options)
-  alg.run()
+  auf = AutoUnfollow(db, twitter, influx, algorithm_options) 
+  
+  while(True):
+    fba.run_once()
+    auf.run_once()
+    sleep(algorithm_options['wait_for_follow'])
 
 if __name__ == "__main__":
   main()

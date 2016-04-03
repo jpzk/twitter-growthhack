@@ -24,13 +24,7 @@ class TwitterAlgorithm(object):
     """Runs the algorithm once, useful for sequential execution"""
     pass
 
-  def run(self):
-    """Run in a loop"""
-    pass
-
-class UnfollowAllNotFollowers(TwitterAlgorithm):
-  def __init__(self, db, twitter, influx, options):
-    self.l = getLogger("UnfollowAllNotFollowers")
+class AutoUnfollow(TwitterAlgorithm):
   
   def _read_options(self, options):
     """Reads in the options for the specific algorithm"""
@@ -38,12 +32,15 @@ class UnfollowAllNotFollowers(TwitterAlgorithm):
 
   def run_once(self):
     """Runs the algorithm once, useful for sequential execution"""
-    followers = self.twitter.get_followers()
+    twitter = self.twitter
+    
+    followers = twitter.get_followers()
     following = twitter.get_following()
 
-  def run(self):
-    """Run in a loop"""
-    pass
+    to_unfollow = filter(lambda x : x not in followers, following)
+    for user_id in to_unfollow:
+      twitter.unfollow_user(user_id)
+    self.influx.write_unfollowing(len(to_unfollow))
 
 class FollowBackAlgorithm(object):
   """FollowBackAlgorithm: Follows users from certain 
@@ -139,10 +136,5 @@ class FollowBackAlgorithm(object):
       db.insert_blacklist(user_id)
       m = "Putting user %s into blacklist" 
       l.info(m % user_id)    
-  
-  def run(self):
-    while(True):
-      self.run_once()
-      sleep(self.wait_for_follow)
 
-
+    influx.write_unfollowing(len(no_back_follow))

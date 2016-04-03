@@ -18,6 +18,7 @@ class InfluxWriter(object):
     self.config = options['config']
 
     def table(t): return options['tables'][t]
+    self.unfollowing = table('unfollowing')
     self.followers = table('followers')
     self.following = table('following')
     self.follows = table('follows')
@@ -44,6 +45,9 @@ class InfluxWriter(object):
 
   def write_following(self, count):
     self._write_count(self.following, count)
+
+  def write_unfollowing(self, count):
+    self._write_count(self.unfollowing, count)
 
   def write_followers(self, count):
     self._write_count(self.followers, count)
