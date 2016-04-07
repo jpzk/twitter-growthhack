@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from TwitterAPI import TwitterAPI
+from time import sleep
 
 class TwitterClient(object):
   """This class is used for the communication with the 
@@ -14,16 +15,21 @@ class TwitterClient(object):
           options['access_token_key'],\
           options['access_token_secret'])
 
+  def _sleep(self):
+    sleep(5)
+
   def get_followers(self):
     followers = []
     for id in self.api.request('followers/ids'):
         followers.append(id)
+    self._sleep()
     return followers
  
   def get_following(self):
     following = []
     for id in self.api.request('friends/ids'):
         following.append(id)
+    self._sleep()
     return following
 
   def follow_user(self, user_id):
@@ -31,13 +37,15 @@ class TwitterClient(object):
     if r.status_code == 200:
       status = r.json()
       print 'followed %s' % status['screen_name']
-  
+    self._sleep()
+
   def unfollow_user(self, user_id):
     r = self.api.request('friendships/destroy', {'user_id': user_id})
     if r.status_code == 200:
       status = r.json()
       print 'unfollowed %s' % status['screen_name']
-  
+    self._sleep()
+
   def get_users_for_topic(self, topic):
     r = self.api.request('search/tweets', {
       'count':100,
@@ -46,6 +54,7 @@ class TwitterClient(object):
     statuses = r.json()['statuses']
     how_many = len(statuses)
     print("fetched " + str(how_many) + " tweets")
+    self._sleep()
     return map(lambda s : s['user'], statuses)
   
   

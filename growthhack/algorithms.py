@@ -40,6 +40,7 @@ class AutoUnfollow(TwitterAlgorithm):
     to_unfollow = filter(lambda x : x not in followers, following)
     for user_id in to_unfollow:
       twitter.unfollow_user(user_id)
+      sleep(60)
     self.influx.write_unfollowing(len(to_unfollow))
 
 class FollowBackAlgorithm(object):

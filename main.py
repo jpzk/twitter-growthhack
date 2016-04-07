@@ -65,8 +65,7 @@ influx = InfluxWriter(influx_options)
 basicConfig(filename=logfile, level=INFO)
 
 def main():
-  fba = FollowBackAlgorithm(db, twitter, influx,
-      algorithm_options)
+  fba = FollowBackAlgorithm(db, twitter, influx,algorithm_options)
   auf = AutoUnfollow(db, twitter, influx, algorithm_options) 
   
   while(True):
