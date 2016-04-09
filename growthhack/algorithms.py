@@ -112,7 +112,7 @@ class FollowBackAlgorithm(object):
       l.info(m % len(cs))
 
       for candidate in cs:
-        if followed >= followed_quota:
+        if followed >= self.follow_quota:
           break
 
         twitter.follow_user(candidate['id_str'])
