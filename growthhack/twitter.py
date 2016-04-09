@@ -16,7 +16,7 @@ class TwitterClient(object):
           options['access_token_secret'])
 
   def _sleep(self):
-    sleep(5)
+    sleep(10)
 
   def get_followers(self):
     followers = []

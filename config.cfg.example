@@ -1,6 +1,7 @@
 [config]
 name = madewithtea
 version = 1
+frequency = 120
 
 [logging]
 filename = growthhack.log

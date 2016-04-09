@@ -22,6 +22,7 @@ def my_is_feasible(user):
 # Configuration version
 configname = config.get('config','name')
 version = config.get('config','version')
+frequency = config.get('config', 'frequency')
 configoptions = {'name': configname, 'version': version}
 
 logfile = config.get('logging','filename')
@@ -72,7 +73,7 @@ def main():
   while(True):
     fba.run_once()
     auf.run_once()
-    sleep(algorithm_options['wait_for_follow'])
+    sleep(frequency)
 
 if __name__ == "__main__":
   main()
