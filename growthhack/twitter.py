@@ -48,13 +48,20 @@ class TwitterClient(object):
 
   def get_users_for_topic(self, topic):
     r = self.api.request('search/tweets', {
-      'count':100,
+      'count':200,
       'q':topic,
       'lang':"de"})
     statuses = r.json()['statuses']
     how_many = len(statuses)
     print("fetched " + str(how_many) + " tweets")
     self._sleep()
-    return map(lambda s : s['user'], statuses)
-  
+
+    users = map(lambda s : s['user'], statuses)
+    users_id_unique = set()
+    distinct = []
+    for user in users:
+      if(user['id_str'] not in users_id_unique):
+        distinct.append(user)
+        users_id_unique.add(user['id_str'])
+    return distinct
   
