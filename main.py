@@ -16,7 +16,7 @@ config.read(argv[1])
 
 ## Options for FollowBackAlgorithm
 def my_is_feasible(user):
-  return ((user['followers_count'] < 500) and \
+  return ((user['followers_count'] < 1000) and \
   (user['lang'] == "en" or user['lang'] == "de"))
 
 # Configuration version
@@ -54,6 +54,7 @@ topics = config.get('algorithm','topics').split(',')
 algorithm_options = {
   'topics': topics,
   'config': configoptions,
+  'follow_quota': int(config.get('algorithm','follow_quota')),
   'new_per_topic': int(config.get('algorithm','new_per_topic')),
   'wait_for_follow': int(config.get('algorithm','wait_for_follow')),
   'is_feasible':  my_is_feasible

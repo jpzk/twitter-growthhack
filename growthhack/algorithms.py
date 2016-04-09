@@ -59,6 +59,7 @@ class FollowBackAlgorithm(object):
     self.topics = options['topics']
     self.new_per_topic = options['new_per_topic']
     self.wait_for_follow = options['wait_for_follow']
+    self.follow_quota = options['follow_quota']
     self.is_feasible = options['is_feasible']
 
     if(self.is_feasible == None):
@@ -94,6 +95,7 @@ class FollowBackAlgorithm(object):
     following = twitter.get_following()    
     influx.write_following(len(following))
 
+    followed = 0
     # Getting new followers
     for topic in self.topics:
       l.info("topic %s" % topic)
@@ -110,11 +112,17 @@ class FollowBackAlgorithm(object):
       l.info(m % len(cs))
 
       for candidate in cs:
+        if followed >= followed_quota:
+          break
+
         twitter.follow_user(candidate['id_str'])
         db.insert_follow_user(candidate['id_str'])
+        
+        followed = followed + 1
         m = "follow user %s wait for follow back"
         l.info(m % candidate['screen_name'])
-      influx.write_follows(len(cs))
+    
+    influx.write_follows(followed)
 
     # Check if the followed follow back
     no_back_follow = \

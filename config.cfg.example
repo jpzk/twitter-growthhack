@@ -1,3 +1,10 @@
+[config]
+name = madewithtea
+version = 1
+
+[logging]
+filename = growthhack.log
+
 [twitter]
 consumer_key = 
 consumer_secret = 
@@ -8,19 +15,21 @@ access_token_secret =
 file = growthhack.db
 
 [influxdb]
-host = 
+host =
 port = 8086
-user = root
-password = root
+user = 
+password = 
 database = twitter
 followers = followers
+unfollowing = unfollowing
 following = following
 follows = follows
-not_followed_back = not_followed_back,
+not_followed_back = not_followed_back
 fetched_tweets = fetched_tweets
 
 [algorithm]
-topics = linux,scala,raspberrypi,spark
-new_per_topic = 5
+follow_quota = 100
+topics = #linux,#scala,#finatra,#finagle,#spark,#opensource,#sbt
+new_per_topic = 10 
 wait_for_follow = 11000 
 
